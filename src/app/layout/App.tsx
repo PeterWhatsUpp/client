@@ -7,6 +7,7 @@ import {
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import About from '../../features/about/About'
 import Catalog from '../../features/catalog/Catalog'
 import ProductDetails from '../../features/catalog/ProductDetails'
@@ -14,31 +15,14 @@ import Contact from '../../features/contact/Contact'
 import Home from '../../features/home/Home'
 import { Product } from '../models/product'
 import Header from './Header'
+import 'react-toastify/dist/ReactToastify.css';
+import ServerError from '../errors/ServerError'
+import NotFound from '../errors/NotFound'
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([])
+  
 
-  useEffect(() => {
-    fetch('http://localhost:5175/api/products')
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
-  }, [])
-
-  const addProducts = () => {
-    setProducts((prev) => [
-      ...prev,
-      {
-        id: prev.length + 1,
-        name: `product ${prev.length + 1}`,
-        description: `description ${prev.length + 1}`,
-        price: prev.length * 100,
-        pictureUrl: 'foo',
-        brand: 'brand',
-      },
-    ])
-  }
-
-  const [darkMode, setDarkMode] = useState(false)
+   const [darkMode, setDarkMode] = useState(false)
   const paletteColor = darkMode ? 'dark' : 'light'
   const theme = createTheme({
     palette: {
@@ -52,6 +36,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
+        <ToastContainer theme='colored' position='bottom-right' hideProgressBar/>
         <CssBaseline />
         <Header setDarkMode={setDarkMode} darkMode={darkMode} />
         <Container>
@@ -62,10 +47,12 @@ function App() {
             <Route
               path="/catalog"
               element={
-                <Catalog products={products} addProducts={addProducts} />
+                <Catalog />
               }
             />
             <Route path="/catalog/:id" element={<ProductDetails />} />
+            <Route path="/server-error" element={<ServerError />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>
       </ThemeProvider>

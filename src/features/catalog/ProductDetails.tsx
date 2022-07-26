@@ -5,8 +5,12 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Product } from '../../app/models/product'
 import { setInterval } from 'timers/promises'
+import agent from '../../app/api/agent'
+import NotFound from '../../app/errors/NotFound'
+import LoadingComponent from '../../app/layout/LoadingComponent'
 
 const ProductDetails = () => {
+  debugger;
   const { id } = useParams<{ id: string }>()
 
   const [product, setProduct] = useState<Product | null>(null)
@@ -20,15 +24,13 @@ const ProductDetails = () => {
     //   .catch((error) => console.log(error))
     //   .finally(() => setLoading(false))
     // },2000)
-    axios
-      .get(`http://localhost:5175/api/products/${id}`)
-      .then((response) => setProduct(response.data))
+    agent.Catalog.details(parseInt(id!)).then(product=>setProduct(product))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false))
   }, [id])
 
-  if (loading) return <h3>Loading...</h3>
-  if (!product) return <h3>Product not found...</h3>
+  if (loading) return <h3><LoadingComponent message='Loading product...'/></h3>
+  if (!product) return <h3><NotFound/> </h3>
 
   return (
     <>
