@@ -6,13 +6,16 @@ import reportWebVitals from './reportWebVitals'
 import { Router } from 'react-router-dom'
 import {createBrowserHistory} from 'history';
 import { customHistory, CustomRouter } from './app/routing/CustomRouter'
+import { StoreProvider } from './app/context/StoreContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <React.StrictMode>
     <CustomRouter history={customHistory}>
+      <StoreProvider>
       <App />
+      </StoreProvider>
     </CustomRouter>
   </React.StrictMode>,
 )
