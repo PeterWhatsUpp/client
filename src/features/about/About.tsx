@@ -1,6 +1,6 @@
 import * as material from '@mui/material'
 import { Alert, AlertTitle, List, ListItem, ListItemText } from '@mui/material';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import agent from '../../app/api/agent'
 
 const About = () => {

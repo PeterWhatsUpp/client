@@ -1,5 +1,4 @@
 import * as Mui from '@mui/material'
-import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 const ServerError = () => {
